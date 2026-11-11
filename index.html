@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Việc hôm nay</title>
+  <!-- Nạp file CSS để tạo giao diện -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>Việc hôm nay</h1>
+
+    <!-- Form nhập việc mới. Dùng <form> để nhấn Enter cũng gửi được -->
+    <form id="todo-form" class="todo-form">
+      <input
+        id="todo-input"
+        type="text"
+        placeholder="Hôm nay bạn cần làm gì?"
+        autocomplete="off"
+      >
+      <!-- Chọn hạn chót (không bắt buộc). type="date" cho ra lịch chọn ngày -->
+      <input id="todo-date" type="date" title="Hạn chót (không bắt buộc)">
+      <button type="submit">Thêm</button>
+    </form>
+
+    <!-- Danh sách việc. JavaScript sẽ tự điền các <li> vào đây -->
+    <ul id="todo-list" class="todo-list"></ul>
+
+    <!-- Dòng đếm số việc chưa xong -->
+    <p id="todo-count" class="todo-count"></p>
+  </main>
+
+  <!-- Nạp JavaScript ở cuối body để HTML đã có sẵn khi script chạy -->
+  <script src="script.js"></script>
+</body>
+</html>
