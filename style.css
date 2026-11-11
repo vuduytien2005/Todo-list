@@ -3,34 +3,43 @@
   box-sizing: border-box;
 }
 
+/* ===== Nền trang =====
+   Nhiều lớp nền chồng lên nhau (lớp viết trước nằm trên):
+   - 2 vầng sáng tròn mờ (radial-gradient) ở hai góc
+   - 1 dải màu chéo (linear-gradient) từ tím sang hồng cam */
 body {
   margin: 0;
   min-height: 100vh;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background: #f3f4f6;
   color: #1f2937;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.35), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(255, 214, 165, 0.45), transparent 45%),
+    linear-gradient(135deg, #6366f1 0%, #8b5cf6 45%, #ec4899 100%);
+  background-attachment: fixed; /* nền đứng yên khi cuộn trang */
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 48px 16px;
 }
 
-/* Khung chính của app */
+/* Khung chính của app: thẻ trắng hơi trong suốt, làm mờ nền phía sau */
 .app {
   width: 100%;
-  max-width: 480px;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  max-width: 720px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 20px 50px rgba(30, 27, 75, 0.3);
 }
 
 h1 {
-  margin: 0 0 16px;
-  font-size: 24px;
+  margin: 0 0 20px;
+  font-size: 26px;
 }
 
-/* Form: ô nhập và nút nằm cùng một hàng */
+/* ===== Form thêm việc ===== */
 .todo-form {
   display: flex;
   flex-wrap: wrap; /* màn hình hẹp thì tự xuống dòng */
@@ -40,8 +49,10 @@ h1 {
 .todo-form input {
   padding: 10px 12px;
   font-size: 16px;
+  font-family: inherit;
   border: 1px solid #d1d5db;
   border-radius: 8px;
+  background: #ffffff;
 }
 
 #todo-input {
@@ -51,79 +62,191 @@ h1 {
 
 .todo-form input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #6366f1;
 }
 
 .todo-form button {
-  padding: 10px 16px;
+  padding: 10px 18px;
   font-size: 16px;
   border: none;
   border-radius: 8px;
-  background: #2563eb;
+  background: #6366f1;
   color: #ffffff;
   cursor: pointer;
 }
 
 .todo-form button:hover {
-  background: #1d4ed8;
+  background: #4f46e5;
 }
 
-/* Danh sách việc */
-.todo-list {
-  list-style: none;
-  margin: 16px 0 0;
-  padding: 0;
-}
-
-.todo-item {
+/* ===== Bộ lọc Tất cả / Đã xong / Chưa xong ===== */
+.filters {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid #e5e7eb;
+  gap: 8px;
+  margin-top: 16px;
 }
 
-.todo-item input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+.filter-btn {
+  padding: 6px 14px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px; /* bo tròn hẳn thành dạng viên thuốc */
+  background: #ffffff;
+  color: #374151;
   cursor: pointer;
 }
 
-.todo-text {
-  flex: 1;
+.filter-btn:hover {
+  border-color: #6366f1;
+}
+
+/* Nút đang được chọn */
+.filter-btn.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #ffffff;
+}
+
+/* ===== Bảng việc ===== */
+/* Bọc bảng để màn hình hẹp có thể cuộn ngang thay vì vỡ giao diện */
+.table-wrap {
+  margin-top: 16px;
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.todo-table {
+  width: 100%;
+  border-collapse: collapse; /* gộp viền các ô lại thành 1 nét */
+}
+
+.todo-table th,
+.todo-table td {
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.todo-table th {
+  background: #f5f3ff;
+  color: #4c1d95;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.todo-table tbody tr + tr td {
+  border-top: 1px solid #f3f4f6; /* kẻ ngang giữa các hàng */
+}
+
+.todo-table tbody tr.todo-item:hover {
+  background: #fafaff;
+}
+
+/* Độ rộng các cột */
+.col-check,
+.col-delete {
+  width: 44px;
+  text-align: center !important;
+}
+
+.col-text {
+  width: auto; /* cột nội dung chiếm phần còn lại */
   word-break: break-word;
 }
 
-/* Việc đã xong: gạch ngang và làm mờ chữ */
-.todo-item.done .todo-text {
-  text-decoration: line-through;
-  color: #9ca3af;
-}
-
-/* Nhãn hạn chót bên phải mỗi việc */
-.todo-due {
-  font-size: 13px;
-  color: #6b7280;
+.col-status {
+  width: 130px;
   white-space: nowrap;
 }
 
-/* Đến hạn hôm nay: màu cam */
-.todo-due.today {
-  color: #d97706;
-  font-weight: 600;
+.col-date {
+  width: 110px;
+  white-space: nowrap;
+  color: #6b7280;
 }
 
-/* Quá hạn mà chưa xong: màu đỏ */
-.todo-due.overdue {
-  color: #dc2626;
+.col-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #16a34a; /* ô tick màu xanh lá */
+}
+
+.todo-text {
+  cursor: text;
+}
+
+/* ===== Nhãn trạng thái ở cột "Hạn" ===== */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 13px;
   font-weight: 600;
+  border-radius: 999px;
+}
+
+.badge-ok {
+  background: #dbeafe;
+  color: #1d4ed8; /* Còn hạn: xanh dương */
+}
+
+.badge-soon {
+  background: #fef3c7;
+  color: #b45309; /* Sắp hết hạn: cam */
+}
+
+.badge-overdue {
+  background: #fee2e2;
+  color: #dc2626; /* Hết hạn: đỏ */
+}
+
+.badge-done {
+  background: #dcfce7;
+  color: #16a34a; /* Đã xong: xanh lá */
+}
+
+/* ===== Màu chữ theo trạng thái của cả hàng ===== */
+/* Việc đã xong: nội dung và ngày màu xanh lá (không gạch ngang) */
+.todo-item.done .todo-text,
+.todo-item.done .col-date {
+  color: #16a34a;
+}
+
+/* Việc hết hạn mà chưa xong: nội dung và ngày màu đỏ */
+.todo-item.status-overdue .todo-text,
+.todo-item.status-overdue .col-date {
+  color: #dc2626;
+}
+
+/* Ô nhập hiện ra khi bấm đúp để sửa việc */
+.edit-input {
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 16px;
+  font-family: inherit;
+  border: 1px solid #6366f1;
+  border-radius: 6px;
+  outline: none;
+}
+
+/* Dòng thông báo khi bảng không có việc nào */
+.todo-empty {
+  padding: 20px 12px !important;
+  text-align: center !important;
+  color: #9ca3af;
+  font-style: italic;
 }
 
 .delete-btn {
   border: none;
   background: transparent;
   color: #9ca3af;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 6px;

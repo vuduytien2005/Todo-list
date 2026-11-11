@@ -9,7 +9,7 @@
 </head>
 <body>
   <main class="app">
-    <h1>Việc hôm nay</h1>
+    <h1>Việc hôm nay cần làm</h1>
 
     <!-- Form nhập việc mới. Dùng <form> để nhấn Enter cũng gửi được -->
     <form id="todo-form" class="todo-form">
@@ -24,8 +24,28 @@
       <button type="submit">Thêm</button>
     </form>
 
-    <!-- Danh sách việc. JavaScript sẽ tự điền các <li> vào đây -->
-    <ul id="todo-list" class="todo-list"></ul>
+    <!-- Bộ lọc. data-filter là "nhãn" để JavaScript biết nút nào lọc gì -->
+    <div id="filters" class="filters">
+      <button type="button" class="filter-btn active" data-filter="all">Tất cả</button>
+      <button type="button" class="filter-btn" data-filter="done">Đã xong</button>
+      <button type="button" class="filter-btn" data-filter="active">Chưa xong</button>
+    </div>
+
+    <!-- Bảng việc. <thead> là hàng tiêu đề, JavaScript tự điền các hàng vào <tbody> -->
+    <div class="table-wrap">
+      <table class="todo-table">
+        <thead>
+          <tr>
+            <th class="col-check"></th>
+            <th class="col-text">Nội dung</th>
+            <th class="col-status">Hạn</th>
+            <th class="col-date">Ngày</th>
+            <th class="col-delete"></th>
+          </tr>
+        </thead>
+        <tbody id="todo-list"></tbody>
+      </table>
+    </div>
 
     <!-- Dòng đếm số việc chưa xong -->
     <p id="todo-count" class="todo-count"></p>
